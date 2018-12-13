@@ -226,7 +226,7 @@ is used. For more details please see that key.',
         $outputFile = 'opt/core/config/config_sample_php_parameters.adoc';
         $expectedOutput = file_get_contents(__DIR__ . '/../data/correct-output.adoc');
 
-        $command = $application->find('config:convert-to-asciidoc');
+        $command = $application->find('config:convert-adoc');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'command'  => $command->getName(),

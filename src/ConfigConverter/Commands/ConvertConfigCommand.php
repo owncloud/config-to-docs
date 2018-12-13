@@ -48,11 +48,15 @@ class ConvertConfigCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->convertFile(
-            $input->getOption('input-file'),
-            $input->getOption('output-file'),
-            $input->getOption('tag')
-        );
+		if (!empty($input->getOption('input-file')) and !empty($input->getOption('output-file'))) {
+			$this->convertFile(
+				$input->getOption('input-file'),
+				$input->getOption('output-file'),
+				$input->getOption('tag')
+			);
+		} else {
+			$output->writeln("Please run --help for arguments and options");
+		}
     }
 
     /**
@@ -61,21 +65,21 @@ class ConvertConfigCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('config:convert')
-            ->setDescription('Converts config.sample.php to config_sample_php_parameters.rst')
+            ->setName('config:convert-rst')
+            ->setDescription('Converts config.(apps).sample.php to config_(apps)_sample_php_parameters.rst')
             ->setDefinition(
                 [
                 new InputOption(
                     'input-file',
                     'i',
                     InputOption::VALUE_REQUIRED,
-                    'The location of config.sample.php'
+                    'The location of config.sample.php or config.apps.sample.php'
                 ),
                 new InputOption(
                     'output-file',
                     'o',
                     InputOption::VALUE_REQUIRED,
-                    'The location of config_sample_php_parameters.rst'
+                    'The location of config_sample_php_parameters.rst or config_apps_sample_php_parameters.rst'
                 ),
                 new InputOption(
                     'tag',

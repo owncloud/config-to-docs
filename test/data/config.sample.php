@@ -1201,7 +1201,7 @@ $CONFIG = [
      * memcached_options
      *
      * Connection options for memcached.
-     * @see http://apprize.info/php/scaling/15.html.
+     * @link http://apprize.info/php/scaling/15.html
      */
     'memcached_options' => [
         // Set timeouts to 50ms
