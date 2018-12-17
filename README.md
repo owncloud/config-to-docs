@@ -1,8 +1,13 @@
-# ownCloud config.sample.php to RST converter
+# ownCloud config.(app).sample.php to AsciiDoc / RST converter
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c5e375e4b4af47238dcb8fc234960da4)](https://www.codacy.com/app/settermjd/ownCloud-config-converter?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=settermjd/ownCloud-config-converter&amp;utm_campaign=Badge_Grade)
 
-This script creates a RST file from the comments inside of config.sample.php.
+This script creates, depending of the command used, an `.adoc` or `.rst` file from the comments inside of
+`config.sample.php` or `config.apps.sampe.php`.
+
+**Note:** It is necessary to run this command alsways for both files `config.sample.php` and `config.apps.sampe.php`
+
+**Note:** You will find the latest version of the source files to convert in https://github.com/owncloud/core/tree/master/config 
 
 ## Requirements
 
@@ -12,11 +17,28 @@ Install the dependencies with `composer`:
 
 ## How to use
 
-Just call following in your ownCloud core repo:
+The command has the following structure.
 
-	php path/to/convert.php
+```
+convert.php [options] [arguments]
+```
 
-This will create a file `sample_config.rst` which was generated from `config/config.sample.php`
+For a detailed list of arguments and options, use `--help`.
+
+**Note:** When the conversation is done, copy or move the files created to the docs repository and create a pull request.
+
+The following example commands assume you have cloned `core` and `docs`.
+**Note:** Create and activate upfront a local docs branch which eases creating a pull request.
+
+```
+php convert.php config:convert-adoc \
+  --input-file=../core/config/config.sample.php \
+  --output-file=../docs/modules/administration_manual/pages/configuration/server/config_sample_php_parameters.adoc
+
+php convert.php config:convert-adoc \
+  --input-file=../core/config/config.apps.sample.php \
+  --output-file=../docs/modules/administration_manual/pages/configuration/server/config_apps_sample_php_parameters.adoc
+```
 
 ## Supported feature set
 

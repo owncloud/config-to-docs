@@ -43,7 +43,32 @@ use Zend\InputFilter\InputFilter;
  */
 class ConvertConfigToAsciiDocFormatCommand extends Command
 {
-    const FILTER_REGEX = '/(\$CONFIG = \[)([\S\s|\n|\r]*)(\];)/';
+    /**
+     * Array is defined with [ ]
+     */
+    const FILTER_REGEX_SHORT_ARRAY_SYNTAX = '/(\$CONFIG = \[)([\S\s|\n|\r]*)(\];)/';
+
+    /**
+     * Array is defined array()
+     */
+    const FILTER_REGEX_TRADITIONAL_ARRAY_SYNTAX = '/(\$CONFIG = array\()([\S\s|\n|\r]*)(\);)/';
+
+    /**
+     * ConvertConfigToAsciiDocFormatCommand constructor.
+     *
+     * @todo Supply inputFilter and renderer via constructor-injection
+     */
+    const OUTPUT_MISSING_INPUT_OR_OUTPUT_FILE = 'Please run --help for arguments and options';
+
+    /**
+     * Header separation text.
+     */
+	const HEADER_END_TEXT = '// header end do not delete or edit this line';
+
+    /**
+     * Header separation regex rule. Will catch all text above the defined text.
+     */
+	const FILTER_REGEX_HEADER = '/([\S\s|\n|\r]*)(?=\/\/ header end do not delete or edit this line)/';
 
     /**
      * @var \phpDocumentor\Reflection\DocBlockFactory
@@ -86,13 +111,32 @@ class ConvertConfigToAsciiDocFormatCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->convertFile(
-            $input->getOption('input-file'),
-            $input->getOption('output-file')
-        );
+        if (!empty($input->getOption('input-file')) and !empty($input->getOption('output-file'))) {
+
+			if (!is_readable($input->getOption('input-file'))) {
+				$output->writeln("\n inputFile cant be read, check path and name. Exiting \n");
+				exit;
+			}
+			if (is_writable($input->getOption('output-file'))) {
+				$output->writeln("\n Converting... \n");
+				$this->convertFile(
+					$input->getOption('input-file'),
+					$input->getOption('output-file'),
+					$input->getOption('tag')
+				);
+			} else {
+				$output->writeln("\n outputFile cant be written, check permissions. Exiting \n");
+				exit;
+			}
+        } else {
+            $output->writeln(self::OUTPUT_MISSING_INPUT_OR_OUTPUT_FILE);
+        }
     }
 
     /**
@@ -104,20 +148,20 @@ class ConvertConfigToAsciiDocFormatCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('config:convert-to-asciidoc')
-            ->setDescription('Converts config.sample.php to config_sample_php_parameters.rst')
+            ->setName('config:convert-adoc')
+            ->setDescription('Converts config.(apps).sample.php to config_(apps)_sample_php_parameters.adoc')
             ->setDefinition([
                 new InputOption(
                     'input-file',
                     'i',
                     InputOption::VALUE_REQUIRED,
-                    'The location of config.sample.php'
+                    'The location of config.sample.php or config.apps.sample.php'
                 ),
                 new InputOption(
                     'output-file',
                     'o',
                     InputOption::VALUE_REQUIRED,
-                    'The location of config_sample_php_parameters.rst'
+                    'The location of config_sample_php_parameters.adoc or config_aps_sample_php_parameters.adoc'
                 ),
                 new InputOption(
                     'tag',
@@ -135,29 +179,67 @@ class ConvertConfigToAsciiDocFormatCommand extends Command
      */
     protected function extractCoreContent(string $content) : array
     {
-        preg_match_all(self::FILTER_REGEX, $content, $matches, PREG_PATTERN_ORDER, 0);
-
+        preg_match_all(
+            self::FILTER_REGEX_TRADITIONAL_ARRAY_SYNTAX,
+            $content,
+            $matches,
+            PREG_PATTERN_ORDER,
+            0
+        );
         return explode('/**', $matches[2][0]);
     }
 
     /**
-     * Convert the sample config file to an RST documentation equivalent
+     * @param string $content
+     * @return array
+     */
+    protected function extractHeaderContent(string $content) : string
+    {
+        preg_match(
+            self::FILTER_REGEX_HEADER,
+            $content,
+            $matches,
+            0
+        );
+        return $matches[0];
+    }
+
+    /**
+     * Convert the sample config file to an AsciiDoc (.adoc) documentation equivalent
      *
      * @param string $inputFile
      * @param string $outputFile
      * returns string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function convertFile(string $inputFile, string $outputFile)
     {
+
         $templateData = [];
         $contents = (string) file_get_contents($inputFile);
         $blocks = $this->extractCoreContent($contents);
 
-        foreach ($blocks as $block) {
-            $templateData = $this->parseDocBlock($block, $templateData);
-        }
+		# get the header text of the target file - if available
+		if (file_exists($outputFile)) {
+			$contents = trim((string) file_get_contents($outputFile));
+		} else {
+			$contents = "";
+		}
 
-        $this->writeOutputFile($outputFile, $templateData);
+		# create the header based if there is already a header content set
+		if (empty($contents)) {
+			# if the file has no content, set the header manually
+			$header = self::HEADER_END_TEXT . "\n\n";
+		} else {
+			$header = $this->extractHeaderContent($contents) . self::HEADER_END_TEXT . "\n\n";
+		}
+
+        foreach ($blocks as $block) {
+            $templateData = $this->parseDocBlock($block, $templateData, $header);
+        }
+        $this->writeOutputFile($outputFile, $templateData, $header);
     }
 
     /**
@@ -186,12 +268,15 @@ class ConvertConfigToAsciiDocFormatCommand extends Command
     /**
      * @param string $outputFile
      * @param array $templateData
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    protected function writeOutputFile(string $outputFile, array $templateData)
+    protected function writeOutputFile(string $outputFile, array $templateData, string $header)
     {
         file_put_contents(
             $outputFile,
-            $this->renderer->render('configtoasciidocformat.html.twig', ['blocks' => $templateData])
+            $header . $this->renderer->render('configtoasciidocformat.html.twig', ['blocks' => $templateData])
         );
     }
 
@@ -267,4 +352,5 @@ class ConvertConfigToAsciiDocFormatCommand extends Command
 
         return $inputFilter;
     }
+
 }
