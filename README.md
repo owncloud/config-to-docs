@@ -5,7 +5,7 @@
 This script creates, depending of the command used, an `.adoc` or `.rst` file from the comments inside of
 `config.sample.php` or `config.apps.sampe.php`.
 
-**Note:** It is necessary to run this command alsways for both files `config.sample.php` and `config.apps.sampe.php`
+**Note:** It is necessary to run this command always for both files `config.sample.php` and `config.apps.sampe.php`
 
 **Note:** You will find the latest version of the source files to convert in https://github.com/owncloud/core/tree/master/config 
 
@@ -25,10 +25,12 @@ convert.php [options] [arguments]
 
 For a detailed list of arguments and options, use `--help`.
 
-**Note:** When the conversation is done, copy or move the files created to the docs repository and create a pull request.
+**Note:** When the conversation is done, depending on the output option used,
+copy or move the files created to the docs repository and create a pull request.
+
+**Note:** Create and activate upfront a local docs branch to ease creating a pull request.
 
 The following example commands assume you have cloned `core` and `docs`.
-**Note:** Create and activate upfront a local docs branch which eases creating a pull request.
 
 ```
 php convert.php config:convert-adoc \
