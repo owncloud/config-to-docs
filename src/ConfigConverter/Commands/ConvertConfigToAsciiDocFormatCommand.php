@@ -68,7 +68,7 @@ class ConvertConfigToAsciiDocFormatCommand extends Command
     /**
      * Header separation regex rule. Will catch all text above the defined text.
      */
-	const FILTER_REGEX_HEADER = '/([\S\s|\n|\r]*)(?=\/\/ header end do not delete or edit this line)/';
+	const FILTER_REGEX_HEADER = '/([\S\s|\n|\r]*)(?=(\/\/ header end do not edit or delete this line))/';
 
     /**
      * @var \phpDocumentor\Reflection\DocBlockFactory
