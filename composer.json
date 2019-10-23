@@ -1,5 +1,5 @@
 {
-    "name":    "owncloud/ownCloud-config-converter",
+    "name":    "owncloud/owncloud-config-converter",
     "type":    "library",
     "license": "GPL-2.0-only",
     "authors": [
