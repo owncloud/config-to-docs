@@ -68,7 +68,7 @@ class ConvertConfigToAsciiDocFormatCommand extends Command
     /**
      * Header separation regex rule. Will catch all text above the defined text.
      */
-	const FILTER_REGEX_HEADER = '/([\S\s|\n|\r]*)(?=(\/\/ header end do not edit or delete this line))/';
+	const FILTER_REGEX_HEADER = '/([\S\s|\n|\r]*)(?=(\/\/ header end do not delete or edit this line))/';
 
     /**
      * @var \phpDocumentor\Reflection\DocBlockFactory
@@ -170,7 +170,7 @@ class ConvertConfigToAsciiDocFormatCommand extends Command
                     'Tag to use for copying a config entry (default: see)'
                 ),
             ])
-            ->setHelp('Converts config.sample.php to config_sample_php_parameters.rst');
+            ->setHelp('Converts config.sample.php to config_sample_php_parameters.adoc');
     }
 
     /**
@@ -198,8 +198,7 @@ class ConvertConfigToAsciiDocFormatCommand extends Command
         preg_match(
             self::FILTER_REGEX_HEADER,
             $content,
-            $matches,
-            0
+            $matches
         );
         return $matches[0];
     }
