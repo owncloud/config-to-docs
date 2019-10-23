@@ -35,11 +35,11 @@ The following example commands assume you have cloned `core` and `docs`.
 ```
 php convert.php config:convert-adoc \
   --input-file=../core/config/config.sample.php \
-  --output-file=../docs/modules/administration_manual/pages/configuration/server/config_sample_php_parameters.adoc
+  --output-file=../docs/modules/admin_manual/pages/configuration/server/config_sample_php_parameters.adoc
 
 php convert.php config:convert-adoc \
   --input-file=../core/config/config.apps.sample.php \
-  --output-file=../docs/modules/administration_manual/pages/configuration/server/config_apps_sample_php_parameters.adoc
+  --output-file=../docs/modules/admin_manual/pages/configuration/server/config_apps_sample_php_parameters.adoc
 ```
 
 ## Supported feature set
