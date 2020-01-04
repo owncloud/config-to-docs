@@ -187,6 +187,7 @@ class ConvertConfigToAsciiDocFormatCommand extends Command
             PREG_PATTERN_ORDER,
             0
         );
+
         # match for $CONFIG = [
         if ($matches[1] == []) {
             preg_match_all(
@@ -197,10 +198,12 @@ class ConvertConfigToAsciiDocFormatCommand extends Command
                 0
             );
         }
+
+        # nothing found, print error and exit
         if ($matches[1] == []) {
-			# nothing found, return an empty array
-            return [];
+           echo ' No $CONFIG = [] or $CONFIG = array() found in source file. Exiting.' . "\n\n";
         }
+
         return explode('/**', $matches[2][0]);
     }
 
