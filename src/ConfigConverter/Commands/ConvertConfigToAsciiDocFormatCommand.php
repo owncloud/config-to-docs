@@ -44,7 +44,7 @@ use Zend\InputFilter\InputFilter;
 class ConvertConfigToAsciiDocFormatCommand extends Command
 {
     /**
-     * Array is defined with [ ]
+     * Array is defined with []
      */
     const FILTER_REGEX_SHORT_ARRAY_SYNTAX = '/(\$CONFIG = \[)([\S\s|\n|\r]*)(\];)/';
 
@@ -179,6 +179,7 @@ class ConvertConfigToAsciiDocFormatCommand extends Command
      */
     protected function extractCoreContent(string $content) : array
     {
+        # match for $CONFIG = array(
         preg_match_all(
             self::FILTER_REGEX_TRADITIONAL_ARRAY_SYNTAX,
             $content,
@@ -186,6 +187,20 @@ class ConvertConfigToAsciiDocFormatCommand extends Command
             PREG_PATTERN_ORDER,
             0
         );
+        # match for $CONFIG = [
+        if ($matches[1] == []) {
+            preg_match_all(
+                self::FILTER_REGEX_SHORT_ARRAY_SYNTAX,
+                $content,
+                $matches,
+                PREG_PATTERN_ORDER,
+                0
+            );
+        }
+        if ($matches[1] == []) {
+			# nothing found, return an empty array
+            return [];
+        }
         return explode('/**', $matches[2][0]);
     }
 
