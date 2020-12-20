@@ -42,6 +42,8 @@ php convert.php config:convert-adoc \
   --output-file=../docs/modules/admin_manual/pages/configuration/server/config_apps_sample_php_parameters.adoc
 ```
 
+For ease of use, run the script `./ctd.sh` which uses the commands above and reminds you about prerequisites.
+
 ## Supported feature set
 
 Currently this relies on following
