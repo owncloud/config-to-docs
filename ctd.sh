@@ -10,12 +10,12 @@ CORE="../core"
 DOCS="../docs"
 
 if [ ! -d "$CORE" ]; then
-  printf "\ncore repro not found - exiting\n"
+  printf "\ncore repo not found - exiting\n"
   exit
 fi
 
 if [ ! -d "$DOCS" ]; then
-  printf "\ndocs repro not found - exiting\n"
+  printf "\ndocs repo not found - exiting\n"
   exit
 fi
 
