@@ -30,7 +30,7 @@ copy or move the files created to the docs repository and create a pull request.
 
 **Note:** Create and activate upfront a local docs branch to ease creating a pull request.
 
-The following example commands assume you have cloned `core` and `docs`.
+The following example commands assumes you have cloned `core` and `docs` and created and checked out a target branch in docs.
 
 ```
 php convert.php config:convert-adoc \
@@ -42,15 +42,19 @@ php convert.php config:convert-adoc \
   --output-file=../docs/modules/admin_manual/pages/configuration/server/config_apps_sample_php_parameters.adoc
 ```
 
-For ease of use, run the script `./ctd.sh` which uses the commands above and reminds you about prerequisites.
+**For ease of use**, run the script `./ctd.sh` which uses the commands above and reminds you about prerequisites.
 
-## Supported feature set
+## Rules
 
 Currently this relies on following
 
- * all comments need to start with `/**` and end with ` */` - each on their own line
- * add a `@see CONFIG_INDEX` to copy a previously described config option also to this line
- * everything between the ` */` and the next `/**` will be treated as the config option
+ * All comments need to start with `/**` and end with ` */` - each on its own line
+ * Add a `@see CONFIG_INDEX` to copy a previously described config option also to the current line
+ * Everything between the `*/` and the next `/**` will be treated as the config option
+ * Use RST syntax
+ * The first comment block is replaced by this parser with a template header originated from the corresponding docs file 
+ * If you have multiple possible keys in the comment section, separate them with a blank line, which is necessary for the documentation generation process.
+ * Use examples of the current config files to add new ones.
 
 ## Options to set
 
