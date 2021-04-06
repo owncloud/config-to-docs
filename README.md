@@ -16,7 +16,7 @@ Install the dependencies with `composer`:
 
 ## Rules
 
-Currently this relies on following rules
+Currently this relies on the following rules
 
  * The main files are always in core. Any changes must be done there. Config sample changes made in docs will be overwritten by the next `config-to-docs` run
  * On any changes made to a config sample file in core, you *MUST* run `make test-php-style-fix` to check if changes made fulfill the php requirements 
