@@ -218,6 +218,9 @@ class ConvertConfigToAsciiDocFormatCommand extends Command
             $content,
             $matches
         );
+        if (empty($matches)) {
+            return '';
+        }
         return $matches[0];
     }
 

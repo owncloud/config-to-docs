@@ -1,3 +1,5 @@
+// header end do not delete or edit this line
+
 == Default Parameters
 
 These parameters are configured by the ownCloud installer, and are required
