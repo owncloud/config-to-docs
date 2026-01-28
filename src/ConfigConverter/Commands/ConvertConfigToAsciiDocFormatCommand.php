@@ -137,6 +137,7 @@ class ConvertConfigToAsciiDocFormatCommand extends Command
         } else {
             $output->writeln(self::OUTPUT_MISSING_INPUT_OR_OUTPUT_FILE);
         }
+        return Command::SUCCESS;
     }
 
     /**
