@@ -18,7 +18,7 @@ class ConvertConfigToAsciiDocFormatCommandTest extends TestCase
 {
     private $fileSystem;
 
-    public function setUp()
+    public function setUp(): void
     {
         $directory = [
             'opt' => [
