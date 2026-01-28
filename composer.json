@@ -1,11 +1,8 @@
 {
     "name":    "owncloud/owncloud-config-converter",
+    "description": "A tool to convert ownCloud configuration files between different formats.",
     "type":    "library",
     "license": "GPL-2.0-only",
-    "authors": [
-        {"name": "Morris Jobke", "email": "hey@morrisjobke.de"},
-        {"name": "Matthew Setter", "email": "msetter@owncloud.com"}
-    ],
     "autoload": {
         "psr-4": {
             "ConfigConverter\\": "src/ConfigConverter/"
