@@ -7,7 +7,7 @@ printf "\nThis script assumes that you have the git clone directory of core and 
 printf "\nPlease ensure before running this script, that you have switched to the correct branch in core AND you have created and switched to a pushable target branch in docs !!\n\n"
 
 CORE="../core"
-DOCS="../docs"
+DOCS="../docs-server"
 
 if [ ! -d "$CORE" ]; then
   printf "\ncore repo not found - exiting\n"
