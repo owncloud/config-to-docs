@@ -1,7 +1,5 @@
 # ownCloud config sample to AsciiDoc converter
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c5e375e4b4af47238dcb8fc234960da4)](https://www.codacy.com/app/settermjd/ownCloud-config-converter?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=settermjd/ownCloud-config-converter&amp;utm_campaign=Badge_Grade)
-
 Both, `config.sample.php` and `config.apps.sample.php` have their home in core and are written as pure php samples. To use these samples for the owncloud documentation, you need to convert them to an `.adoc` file usable in docs. This repo supports the conversion to an .adoc file by providing an automatism for this  process. 
 
 **Note:** It is necessary to run this command always for both files `config.sample.php` and `config.apps.sampe.php`
@@ -33,7 +31,7 @@ Currently this relies on the following rules
 
 ## General Command
 
-The command has the following structure.
+The internal conversion command has the following structure.
 
 ```
 convert.php [options] [arguments]
@@ -45,9 +43,9 @@ For a detailed list of arguments and options, use `--help`.
 
 To ease the conversion process, the following steps / prerequisites should be taken:
 
- * You have cloned `core`, `docs` and the `config-to-docs` repo locally, into the same base directory
+ * You have cloned `core`, `docs-server` and the `config-to-docs` repo locally, into the same base directory
  * `core`: the master branch should be checked out, containing the latest merged sample files
- * `docs`: you have created a new branch based on an updated master, this branch will contain all changes that will be pushed to docs
+ * `docs-server`: you have created a new branch based on an updated master, this branch will contain all changes that will be pushed to docs
  * `config-to-docs`: you have changed into the root of this directory and are ready to run the commands
 
 Use the following commands for each sample file, or the prepared script `./ctd.sh` which runs both commands below and reminds you about the prerequisites.
