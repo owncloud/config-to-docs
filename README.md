@@ -1,56 +1,32 @@
-# ownCloud config sample to AsciiDoc converter
+# ownCloud Config to Docs Converter
 
-Both, `config.sample.php` and `config.apps.sample.php` have their home in core and are written as pure php samples. To use these samples for the owncloud documentation, you need to convert them to an `.adoc` file usable in docs. This repo supports the conversion to an .adoc file by providing an automatism for this  process. 
+<!-- OSPO-managed README | Generated: 2026-04-16 | v2 -->
 
-**Note:** It is necessary to run this command always for both files `config.sample.php` and `config.apps.sampe.php`
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![ownCloud OSPO](https://img.shields.io/badge/OSPO-ownCloud-blue)](https://kiteworks.com/opensource)
 
-**Note:** You will find the latest version of the source files to convert in https://github.com/owncloud/core/tree/master/config 
+This tool converts ownCloud Server's `config.sample.php` and `config.apps.sample.php` files into AsciiDoc format for use in the ownCloud documentation. It parses PHP configuration samples, extracts comments and key/value pairs, and generates structured `.adoc` files that integrate with the documentation build pipeline. The converter ensures that configuration documentation stays in sync with the source files in core.
 
-## Requirements
+## Part of Documentation
 
-Install the dependencies with `composer`:
+This repository supports the [ownCloud documentation](https://doc.owncloud.com) by automating the conversion of configuration samples from [ownCloud Server (Classic)](https://github.com/owncloud/core). The source PHP config files live in core, and this tool generates the AsciiDoc output used in the admin manual.
 
-	composer update
+## Getting Started
 
-## Rules
+Follow the steps below to set up and run the configuration converter.
 
-Currently this relies on the following rules
+### Requirements
 
- * The main files are always in core. Any changes must be done there. Config sample changes made in docs will be overwritten by the next `config-to-docs` run
- * On any changes made to a config sample file in core, you *MUST* run `make test-php-style-fix` to check if changes made fulfill the php requirements 
- * Each config sample file in core must start with `<?php`, a first comment block describing general rules for this file embedded in `/**` ` */` and the main array `$CONFIG = [];`
- * All configs have to be written inside the brackets of `$CONFIG = [];`
- * If not already present in docs, you have to have for each config file one with a predefined header content. This content is reused as descriptive content on each run and is not replaced by the conversion process. The header follows the asciidoc style and is a necessary part of the rendering process
- * All text added by the conversion process will be added *below* the `// header end do not delete or edit this line` line. Existing content will always be replaced.
- * Changes to the header can be part of a `config-to-docs` run, but mast be made manually.
- * Each config section must have exact one descriptive comment block for the config and directly following at minimum one or more comment blocks describing the key/value and a uncommented line with the key/value itself. `key/value` must follow php syntax.
- * If you have multiple keys for the same comment section, separate them with a blank line, which is necessary for the documentation generation process.
- * The first text line in the first comment block of a config section is used as text for the table of contents. Write brief and carefully
- * Use RST syntax in comment lines
- * Use examples of the current config files to add new ones.
+Install dependencies with Composer:
 
-## General Command
-
-The internal conversion command has the following structure.
-
-```
-convert.php [options] [arguments]
+```bash
+composer update
 ```
 
-For a detailed list of arguments and options, use `--help`.
+### Usage
 
-## How to use
+Run the converter for each config sample file, or use the provided script `./ctd.sh`:
 
-To ease the conversion process, the following steps / prerequisites should be taken:
-
- * You have cloned `core`, `docs-server` and the `config-to-docs` repo locally, into the same base directory
- * `core`: the master branch should be checked out, containing the latest merged sample files
- * `docs-server`: you have created a new branch based on an updated master, this branch will contain all changes that will be pushed to docs
- * `config-to-docs`: you have changed into the root of this directory and are ready to run the commands
-
-Use the following commands for each sample file, or the prepared script `./ctd.sh` which runs both commands below and reminds you about the prerequisites.
-
-```
+```bash
 php convert.php config:convert-adoc \
   --input-file=../core/config/config.sample.php \
   --output-file=../docs/modules/admin_manual/pages/configuration/server/config_sample_php_parameters.adoc
@@ -60,30 +36,79 @@ php convert.php config:convert-adoc \
   --output-file=../docs/modules/admin_manual/pages/configuration/server/config_apps_sample_php_parameters.adoc
 ```
 
-## Advice
+Use `php convert.php --help` for a full list of arguments and options.
 
-When doing changes in the core config sample files or when changes have been already made, regulary do a `config-to-docs` run to check the result. Check the result of the converted file in docs via the browser having an asciidoc previewer enabled. When satisfied, mandatory run in core `make test-php-style-fix`, fix any problems that might raise and recheck the result in the browser. Changes made in core must be merged *before* changes are pushed to docs. When final, push the changes to docs and create a PR.
+## Documentation
+
+- [ownCloud Server documentation](https://doc.owncloud.com)
+- See the source config files in [owncloud/core/config](https://github.com/owncloud/core/tree/master/config)
+
+## Community & Support
+
+**[Star](https://github.com/owncloud/config-to-docs)** this repo and **Watch** for release notifications!
+
+- [ownCloud Website](https://owncloud.com)
+- [Community Discussions](https://github.com/orgs/owncloud/discussions)
+- [Matrix Chat](https://app.element.io/#/room/#owncloud:matrix.org)
+- [Documentation](https://doc.owncloud.com)
+- [Enterprise Support](https://owncloud.com/contact-us/)
+- [OSPO Home](https://kiteworks.com/opensource)
+
+## Contributing
+
+We welcome contributions! Please read the [Contributing Guidelines](CONTRIBUTING.md)
+and our [Code of Conduct](CODE_OF_CONDUCT.md) before getting started.
+
+### Workflow
+
+- **Rebase Early, Rebase Often!** We use a rebase workflow. Always rebase on the target branch before submitting a PR.
+- **Dependabot**: Automated dependency updates are managed via Dependabot. Review and merge dependency PRs promptly.
+- **Signed Commits**: All commits **must** be PGP/GPG signed. See [GitHub's signing guide](https://docs.github.com/en/authentication/managing-commit-signature-verification).
+- **DCO Sign-off**: Every commit must carry a `Signed-off-by` line:
+  ```
+  git commit -s -S -m "your commit message"
+  ```
+- **GitHub Actions Policy**: Workflows may only use actions that are (a) owned by `owncloud`, (b) created by GitHub (`actions/*`), or (c) verified in the GitHub Marketplace.
+
+## Security
+
+**Do not open a public GitHub issue for security vulnerabilities.**
+
+Report vulnerabilities at **<https://security.owncloud.com>** -- see [SECURITY.md](SECURITY.md).
+
+Bug bounty: [YesWeHack ownCloud Program](https://yeswehack.com/programs/owncloud-bug-bounty-program)
 
 ## License
 
-The MIT License (MIT)
+This project is licensed under the [MIT](LICENSE).
 
-Copyright (c) 2014 Morris Jobke <hey@morrisjobke.de>
+## About the ownCloud OSPO
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+The [Kiteworks Open Source Program Office](https://kiteworks.com/opensource), operating under
+the [ownCloud](https://owncloud.com) brand, launched on May 5, 2026, to steward the open source
+ecosystem around ownCloud's products. The OSPO ensures transparent governance, license compliance,
+community health, and sustainable collaboration between the open source community and
+[Kiteworks](https://www.kiteworks.com), which acquired ownCloud in 2023.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+- **OSPO Home**: <https://kiteworks.com/opensource>
+- **GitHub**: <https://github.com/owncloud>
+- **ownCloud**: <https://owncloud.com>
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+For questions about the OSPO or licensing, contact ospo@kiteworks.com.
+
+### License Migration to Apache 2.0
+
+The OSPO is driving a strategic relicensing of ownCloud repositories toward the
+[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0), following
+the [Apache Software Foundation's third-party license policy](https://www.apache.org/legal/resolved.html).
+
+Individual repositories will migrate as their audit is completed. The LICENSE file
+in each repo reflects its **current** license status (not the target).
+
+**Current license: MIT** (Category A per Apache policy -- permissive, compatible with Apache-2.0).
+
+Migration prerequisites for this repository:
+
+- **CLA/DCO coverage**: All past contributors must have signed agreements permitting relicensing
+- **Header updates**: All source file headers must be updated from MIT to Apache-2.0 notice
+- **Dependency audit**: Verify no incompatible transitive dependencies
