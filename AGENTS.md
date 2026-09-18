@@ -29,8 +29,8 @@ This file provides context for AI coding agents (Claude Code, GitHub Copilot, Cu
 
 ## Build & Test Commands
 ```bash
-# Install dependencies
-composer update
+# Install dependencies (install, not update - see README "Requirements")
+composer install
 
 # Test
 ./vendor/bin/phpunit -c phpunit.xml.dist
