@@ -1,5 +1,14 @@
 # ownCloud Config to Docs Converter
 
+> [!IMPORTANT]
+> **This repository is deprecated and will be archived.** The converter now lives in the docs repository as the
+> `config-sample-to-adoc` Antora extension
+> ([owncloud/docs.owncloud.com#160](https://github.com/owncloud/docs.owncloud.com/pull/160)). It reproduces this
+> tool's output byte for byte. The rules for writing the comments in core's `config.sample.php` and
+> `config.apps.sample.php`, formerly under "Authoring rules" below, moved to
+> [`content/server/AGENTS.md`](https://github.com/owncloud/docs.owncloud.com/blob/main/content/server/AGENTS.md)
+> in the docs repository. Please do not open new issues or pull requests here.
+
 <!-- OSPO-managed README | Generated: 2026-04-16 | v2 -->
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![ownCloud OSPO](https://img.shields.io/badge/OSPO-ownCloud-blue)](https://kiteworks.com/opensource)
