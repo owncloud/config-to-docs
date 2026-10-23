@@ -2,6 +2,10 @@
 
 This file provides context for AI coding agents (Claude Code, GitHub Copilot, Cursor, etc.) working in this repository.
 
+> **Deprecated, to be archived.** The converter moved to owncloud/docs.owncloud.com as the `config-sample-to-adoc`
+> Antora extension, and the authoring rules for core's sample files moved to `content/server/AGENTS.md` there. Do
+> not make changes here; make them in the docs repository.
+
 ## Repository Overview
 - **Product family:** Documentation
 - **Primary language(s):** PHP
